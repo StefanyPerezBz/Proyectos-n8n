@@ -14,7 +14,7 @@ from n8n_client import N8NClient
 
 
 # ==========================================================
-# 🔧 CONFIGURACIÓN GENERAL
+# CONFIGURACIÓN GENERAL
 # ==========================================================
 st.set_page_config(
     page_title="Sistema de Gestión de Almacén",
@@ -25,7 +25,7 @@ st.set_page_config(
 
 
 # ==========================================================
-# ⚙️ INICIALIZACIÓN DE COMPONENTES
+# INICIALIZACIÓN DE COMPONENTES
 # ==========================================================
 @st.cache_resource
 def init_components():
@@ -37,7 +37,7 @@ db = components["db"]
 n8n = components["n8n"]
 
 # ==========================================================
-# 🧭 SIDEBAR PRINCIPAL
+# SIDEBAR PRINCIPAL
 # ==========================================================
 st.sidebar.title("🏭 Sistema de Gestión de Almacén")
 
@@ -53,7 +53,7 @@ menu = st.sidebar.radio(
 )
 
 # ==========================================================
-# 📦 MÓDULO PRODUCTOS
+# MÓDULO PRODUCTOS
 # ==========================================================
 if menu == "📦 Productos":
     st.header("📦 Mantenedor de Productos")
@@ -86,7 +86,7 @@ if menu == "📦 Productos":
 
 
 # ==========================================================
-# 🏷️ MÓDULO LÍNEAS
+# MÓDULO LÍNEAS
 # ==========================================================
 elif menu == "🏷️ Líneas":
     st.header("🏷️ Mantenedor de Líneas")
@@ -113,7 +113,7 @@ elif menu == "🏷️ Líneas":
         eliminar_linea(db, n8n)
 
 # ==========================================================
-# 📊 DASHBOARD
+# DASHBOARD
 # ==========================================================
 elif menu == "📊 Dashboard":
     from modulos.dashboard import mostrar_dashboard
@@ -121,7 +121,7 @@ elif menu == "📊 Dashboard":
     mostrar_dashboard(db)
 
 # ==========================================================
-# 🧾 REPORTES PDF
+# REPORTES PDF
 # ==========================================================
 elif menu == "🧾 Reportes PDF":
     st.header("🧾 Generar Reportes en PDF")
@@ -130,7 +130,7 @@ elif menu == "🧾 Reportes PDF":
     generar_reportes(db, n8n)
 
 # ==========================================================
-# 🚨 ALERTAS
+# ALERTAS
 # ==========================================================
 elif menu == "🚨 Alertas de Stock":
     st.header("🚨 Alerta Automática por Stock Bajo")
@@ -139,7 +139,7 @@ elif menu == "🚨 Alertas de Stock":
     disparar_alertas(db, n8n)
 
 # ==========================================================
-# ✅ PIE DE PÁGINA
+# PIE DE PÁGINA
 # ==========================================================
 st.markdown(
     """
