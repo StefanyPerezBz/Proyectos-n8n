@@ -1,9 +1,7 @@
-# 📚 Repositorio de Proyectos — Gestión, Seguridad y Analítica  
-### **Streamlit · FastAPI · Supabase · N8N**
+# 📚 Repositorio de Proyectos con n8n — Gestión, Seguridad y Analítica  
 
 <p align="center">
-  <a href="https://streamlit.io/">
-    <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" />
+  <a href="https://streamlit.io/">    <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" />
   </a>
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
@@ -90,5 +88,5 @@ Cada proyecto tiene su propio README interno con pasos detallados.
 
 ---
 
-## ✨ Autor
+## ✨ Información
 Desarrollado como proyectos académicos y solución integral para proyectos de automatización, análisis y gestión basados en Streamlit, Supabase y N8N. 
