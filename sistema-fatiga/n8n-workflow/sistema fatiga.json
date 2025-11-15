@@ -1,0 +1,2063 @@
+{
+  "name": "sistema fatiga",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-operador",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        -336
+      ],
+      "id": "863be751-673f-4951-89cb-6b98d9ee13e3",
+      "name": "Webhook",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "operadores",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nombre",
+              "fieldValue": "={{ $json[\"body\"][\"nombre\"] }}"
+            },
+            {
+              "fieldId": "apellido",
+              "fieldValue": "={{ $json[\"body\"][\"apellido\"] }}"
+            },
+            {
+              "fieldId": "turno_asignado",
+              "fieldValue": "={{ $json[\"body\"][\"turno_asignado\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -336
+      ],
+      "id": "5cd5fc59-f2e4-45b1-a425-dfb1f10cda0f",
+      "name": "Insertar operador",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Operador registrado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -384,
+        -336
+      ],
+      "id": "bf347977-4ef6-487a-9278-607a4828d926",
+      "name": "Responder a insertar"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "operadores",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nombre",
+              "fieldValue": "={{ $json[\"body\"][\"nombre\"] }}"
+            },
+            {
+              "fieldId": "apellido",
+              "fieldValue": "={{ $json[\"body\"][\"apellido\"] }}"
+            },
+            {
+              "fieldId": "turno_asignado",
+              "fieldValue": "={{ $json[\"body\"][\"turno_asignado\"] }}"
+            },
+            {
+              "fieldId": "fecha_actualizacion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -160
+      ],
+      "id": "d10c232f-16ba-46db-bc1e-5f2dacf17e20",
+      "name": "Actualizar operador",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Operador actualizado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -384,
+        -160
+      ],
+      "id": "67d44867-d954-485b-8856-2e89e93538e3",
+      "name": "Responder a actualizar"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-operador",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        -160
+      ],
+      "id": "1e11e79b-d9e0-4cdc-80ce-fff1bf95086d",
+      "name": "Webhook1",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "delete-operador",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        16
+      ],
+      "id": "ff16d88e-2731-4480-b9fd-3840ce285cbf",
+      "name": "Webhook2",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Operador eliminado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -384,
+        16
+      ],
+      "id": "4acd13b1-0127-4ae8-ab48-5cf9245602d2",
+      "name": "Responder a eliminar"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-dispositivo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        -336
+      ],
+      "id": "2c6a7298-36aa-4c48-b47c-22baf2d8bf25",
+      "name": "Webhook3",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "dispositivos",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "tipo",
+              "fieldValue": "={{ $json[\"body\"][\"tipo\"] }}"
+            },
+            {
+              "fieldId": "modelo",
+              "fieldValue": "={{ $json[\"body\"][\"modelo\"] }}"
+            },
+            {
+              "fieldId": "id_operador_asignado",
+              "fieldValue": "={{ $json[\"body\"][\"id_operador_asignado\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -336
+      ],
+      "id": "a60497fb-5424-41a7-a5e9-63a104ac1894",
+      "name": "Insertar dispositivo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Dispositivo registrado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        288,
+        -336
+      ],
+      "id": "ec74d0ed-2ffe-47a2-a666-53c415e0947a",
+      "name": "Responder a insertar1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-dispositivo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        -144
+      ],
+      "id": "66b76541-3922-440d-81d5-09a13deec4b0",
+      "name": "Webhook4",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "dispositivos",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "tipo",
+              "fieldValue": "={{ $json[\"body\"][\"tipo\"] }}"
+            },
+            {
+              "fieldId": "modelo",
+              "fieldValue": "={{ $json[\"body\"][\"modelo\"] }}"
+            },
+            {
+              "fieldId": "id_operador_asignado",
+              "fieldValue": "={{ $json[\"body\"][\"id_operador_asignado\"] }}"
+            },
+            {
+              "fieldId": "fecha_actualizacion",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -144
+      ],
+      "id": "7cfddb24-4662-4752-acab-101243189256",
+      "name": "Actualizar dispositivo1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Dispositivo actualizado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        288,
+        -144
+      ],
+      "id": "f920871a-b76a-4c65-b790-3bade8f450cb",
+      "name": "Responder a actualizar1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "delete-dispositivo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        32
+      ],
+      "id": "79ccd71a-fd50-4733-b107-cdcd5ebe0bf1",
+      "name": "Webhook5",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Dispositivo eliminado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        288,
+        32
+      ],
+      "id": "33a52b4d-7e8d-4e34-a74e-3e4a0245e10f",
+      "name": "Responder a eliminar1"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "dispositivos",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        80,
+        32
+      ],
+      "id": "a637a87a-7242-492e-bc27-1e3666e361a4",
+      "name": "Eliminar dispositivo",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-usuario",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -784,
+        224
+      ],
+      "id": "b21d6d2e-7ee3-4139-8359-f766fe12b720",
+      "name": "Webhook6",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Usuario registrado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -368,
+        224
+      ],
+      "id": "fda6f63b-c4b0-4991-a5ea-25746df28b2a",
+      "name": "Responder a insertar2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-usuario",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -784,
+        432
+      ],
+      "id": "12dbb3ae-23ef-45bc-972e-ff655f7dda04",
+      "name": "Webhook7",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Usuario actualizado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        800,
+        432
+      ],
+      "id": "56bd2478-a366-4301-96ff-d0158b6455ef",
+      "name": "Responder a actualizar2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "delete-usuario",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -768,
+        848
+      ],
+      "id": "c8c74387-5f6c-4f52-aff2-b144b1e63e43",
+      "name": "Webhook8",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Usuario eliminado exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -352,
+        848
+      ],
+      "id": "5a907366-22cc-4ce4-8e6d-d26612d6466f",
+      "name": "Responder a eliminar2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "usuarios_sistema",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nombre",
+              "fieldValue": "={{ $json[\"body\"][\"nombre\"] }}"
+            },
+            {
+              "fieldId": "apellido",
+              "fieldValue": "={{ $json[\"body\"][\"apellido\"] }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json[\"body\"][\"email\"] }}"
+            },
+            {
+              "fieldId": "rol",
+              "fieldValue": "={{ $json[\"body\"][\"rol\"] }}"
+            },
+            {
+              "fieldId": "nombre_usuario",
+              "fieldValue": "={{ $json[\"body\"][\"nombre_usuario\"] }}"
+            },
+            {
+              "fieldId": "contrasena_hash",
+              "fieldValue": "={{$json[\"body\"][\"contrasena_hash\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        224
+      ],
+      "id": "983942ef-f007-425a-a327-c3d0cd9b6faf",
+      "name": "Insertar usuario",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "usuarios_sistema",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"id\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nombre",
+              "fieldValue": "={{$json[\"nombre\"]}}"
+            },
+            {
+              "fieldId": "apellido",
+              "fieldValue": "={{$json[\"apellido\"]}}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{$json[\"email\"]}}"
+            },
+            {
+              "fieldId": "nombre_usuario",
+              "fieldValue": "={{$json[\"nombre_usuario\"]}}"
+            },
+            {
+              "fieldId": "rol",
+              "fieldValue": "={{$json[\"rol\"]}}"
+            },
+            {
+              "fieldId": "contrasena_hash",
+              "fieldValue": "={{$json[\"contrasena_hash\"]}}"
+            },
+            {
+              "fieldId": "fecha_actualizacion",
+              "fieldValue": "={{$now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        560,
+        432
+      ],
+      "id": "57d8feca-0b01-48aa-86e2-e5638e651c5c",
+      "name": "Actualizar usuario",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "usuarios_sistema",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        848
+      ],
+      "id": "ebb42f4f-a37d-45c1-a9b9-2a59eed93b77",
+      "name": "Eliminar usuario",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "operadores",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        16
+      ],
+      "id": "36bf8973-c7c2-46f3-adc1-9a98b72e65e3",
+      "name": "Eliminar operador1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "getAll",
+        "tableId": "usuarios_sistema",
+        "limit": 1,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"body\"][\"id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        576
+      ],
+      "id": "3f495cb0-c1b0-410e-8800-02a73b158624",
+      "name": "Traer contraseña actual",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -192,
+        416
+      ],
+      "id": "3dafa2a1-fe67-4248-a589-cdc6d27b8d72",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// este nodo convierte el body del webhook en un json plano usable\nreturn {\n  ...$json.body\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        416
+      ],
+      "id": "428528aa-16b7-4f20-bd19-fa517254b8bc",
+      "name": "Flatten Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a5ec9bad-3b48-4d53-a97c-95dac13b4a3d",
+              "leftValue": "={{$json.contrasena_hash}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        416
+      ],
+      "id": "b8ba4c1a-d91f-4e98-8f66-62766e365736",
+      "name": "¿nueva_contrasena viene vacía?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eebf12c5-a95f-4cc0-846a-27d936fe46f9",
+              "name": "id",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "1d35d887-e2aa-42bf-9163-d9992abf5f2b",
+              "name": "nombre",
+              "value": "={{$json.nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "5f1d9cce-fc2e-4cde-b787-ac3237487fde",
+              "name": "apellido",
+              "value": "={{$json.apellido}}",
+              "type": "string"
+            },
+            {
+              "id": "a5fca2a2-44d6-4ec8-bbab-c12ce591f1c4",
+              "name": "email",
+              "value": "={{$json.email}}",
+              "type": "string"
+            },
+            {
+              "id": "9643c659-bcc2-44e4-b5cb-d2acd90776da",
+              "name": "nombre_usuario",
+              "value": "={{$json.nombre_usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "a9ea2872-7d07-4ca8-953a-ba7bc38695b7",
+              "name": "rol",
+              "value": "={{$json.rol}}",
+              "type": "string"
+            },
+            {
+              "id": "b65083b0-01d1-46a5-b089-e533e588ba65",
+              "name": "contrasena_hash",
+              "value": "={{$json.contrasena_hash}}",
+              "type": "string"
+            },
+            {
+              "id": "0e1afc80-801b-49b4-b2e4-3d84dc4671df",
+              "name": "fecha_actualizacion",
+              "value": "={{$now}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        320
+      ],
+      "id": "2df83ddb-66f5-431a-a891-9b66aa70ea6c",
+      "name": "mezclar resultado del crypto con los demás datos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ef2224eb-2005-4822-955d-06fc08144211",
+              "name": "id",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "4bdf6c8b-7540-404b-af16-f45bd5020c43",
+              "name": "nombre_usuario",
+              "value": "={{$json.nombre_usuario}}",
+              "type": "string"
+            },
+            {
+              "id": "f1e6a404-59e6-43b2-98db-efe22bde48db",
+              "name": "nombre",
+              "value": "={{$json.nombre}}",
+              "type": "string"
+            },
+            {
+              "id": "deb16382-94e3-46e6-89b9-a274036846aa",
+              "name": "apellido",
+              "value": "={{$json.apellido}}",
+              "type": "string"
+            },
+            {
+              "id": "875612c5-acd6-474a-89f5-c33801c5d61a",
+              "name": "email",
+              "value": "={{$json.email}}",
+              "type": "string"
+            },
+            {
+              "id": "49df6eb3-816b-4d59-a64d-bb36509d4cca",
+              "name": "rol",
+              "value": "={{$json.rol}}",
+              "type": "string"
+            },
+            {
+              "id": "a4a32dd3-fb59-46ab-babb-b9eb0bf6e71d",
+              "name": "contrasena_hash",
+              "value": "={{$json.contrasena_hash}}",
+              "type": "string"
+            },
+            {
+              "id": "4e5a90b6-a2aa-421a-9d06-c26535138629",
+              "name": "fecha_actualizacion",
+              "value": "={{$now}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        512
+      ],
+      "id": "33d7ab89-cbf0-4aff-b00e-5df76303c150",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-metrica",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -752,
+        1104
+      ],
+      "id": "62ed5727-ddac-4362-abae-91ed0d535393",
+      "name": "Webhook9",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Métrica registrada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -336,
+        1104
+      ],
+      "id": "30f22f6f-bbdd-45ee-80f9-af0f0535f194",
+      "name": "Responder a insertar3"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "metricas_procesadas",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ new Date().toISOString() }}"
+            },
+            {
+              "fieldId": "id_operador",
+              "fieldValue": "={{ $json[\"body\"][\"id_operador\"] }}"
+            },
+            {
+              "fieldId": "indice_fatiga",
+              "fieldValue": "={{ $json[\"body\"][\"indice_fatiga\"] }}"
+            },
+            {
+              "fieldId": "clasificacion_riesgo",
+              "fieldValue": "={{ $json[\"body\"][\"clasificacion_riesgo\"] }}"
+            },
+            {
+              "fieldId": "hrv",
+              "fieldValue": "={{ $json[\"body\"][\"hrv\"] }}"
+            },
+            {
+              "fieldId": "frecuencia_cardiaca",
+              "fieldValue": "={{ $json[\"body\"][\"frecuencia_cardiaca\"] }}"
+            },
+            {
+              "fieldId": "temperatura_piel",
+              "fieldValue": "={{ $json[\"body\"][\"temperatura_piel\"] }}"
+            },
+            {
+              "fieldId": "nivel_estres",
+              "fieldValue": "={{ $json[\"body\"][\"nivel_estres\"] }}"
+            },
+            {
+              "fieldId": "angulo_inclinacion",
+              "fieldValue": "={{ $json[\"body\"][\"angulo_inclinacion\"] }}"
+            },
+            {
+              "fieldId": "nivel_contra_muscular",
+              "fieldValue": "={{ $json[\"body\"][\"nivel_contra_muscular\"] }}"
+            },
+            {
+              "fieldId": "tipo_maquinaria",
+              "fieldValue": "={{ $json[\"body\"][\"tipo_maquinaria\"] }}"
+            },
+            {
+              "fieldId": "turno_trabajo",
+              "fieldValue": "={{ $json[\"body\"][\"turno_trabajo\"] }}"
+            },
+            {
+              "fieldId": "horas_turno",
+              "fieldValue": "={{ $json[\"body\"][\"horas_turno\"] }}"
+            },
+            {
+              "fieldId": "temperatura_ambiente",
+              "fieldValue": "={{ $json[\"body\"][\"temperatura_ambiente\"] }}"
+            },
+            {
+              "fieldId": "humedad_ambiente",
+              "fieldValue": "={{ $json[\"body\"][\"humedad_ambiente\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        1104
+      ],
+      "id": "a61db099-96ff-40de-b372-b607ecce030b",
+      "name": "Insertar metrica",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-metrica",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        816
+      ],
+      "id": "a7c6a2d1-df5b-4f02-b0a7-23ca45cf0fdc",
+      "name": "Webhook10",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "metricas_procesadas",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ new Date().toISOString() }}"
+            },
+            {
+              "fieldId": "id_operador",
+              "fieldValue": "={{ $json[\"body\"][\"id_operador\"] }}"
+            },
+            {
+              "fieldId": "indice_fatiga",
+              "fieldValue": "={{ $json[\"body\"][\"indice_fatiga\"] }}"
+            },
+            {
+              "fieldId": "clasificacion_riesgo",
+              "fieldValue": "={{ $json[\"body\"][\"clasificacion_riesgo\"] }}"
+            },
+            {
+              "fieldId": "hrv",
+              "fieldValue": "={{ $json[\"body\"][\"hrv\"] }}"
+            },
+            {
+              "fieldId": "frecuencia_cardiaca",
+              "fieldValue": "={{ $json[\"body\"][\"frecuencia_cardiaca\"] }}"
+            },
+            {
+              "fieldId": "temperatura_piel",
+              "fieldValue": "={{ $json[\"body\"][\"temperatura_piel\"] }}"
+            },
+            {
+              "fieldId": "nivel_estres",
+              "fieldValue": "={{ $json[\"body\"][\"nivel_estres\"] }}"
+            },
+            {
+              "fieldId": "angulo_inclinacion",
+              "fieldValue": "={{ $json[\"body\"][\"angulo_inclinacion\"] }}"
+            },
+            {
+              "fieldId": "nivel_contra_muscular",
+              "fieldValue": "={{ $json[\"body\"][\"nivel_contra_muscular\"] }}"
+            },
+            {
+              "fieldId": "tipo_maquinaria",
+              "fieldValue": "={{ $json[\"body\"][\"tipo_maquinaria\"] }}"
+            },
+            {
+              "fieldId": "turno_trabajo",
+              "fieldValue": "={{ $json[\"body\"][\"turno_trabajo\"] }}"
+            },
+            {
+              "fieldId": "horas_turno",
+              "fieldValue": "={{ $json[\"body\"][\"horas_turno\"] }}"
+            },
+            {
+              "fieldId": "temperatura_ambiente",
+              "fieldValue": "={{ $json[\"body\"][\"temperatura_ambiente\"] }}"
+            },
+            {
+              "fieldId": "humedad_ambiente",
+              "fieldValue": "={{ $json[\"body\"][\"humedad_ambiente\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        816
+      ],
+      "id": "1e3ab20c-f42b-426c-8f92-8ec643932d87",
+      "name": "Actualizar metrica1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "delete-metrica",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1024
+      ],
+      "id": "0919619b-d1ff-4f73-b704-31d5fb70d07c",
+      "name": "Webhook11",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Métrica eliminada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        1024
+      ],
+      "id": "4356e67a-0af7-4c60-83c1-36d593dc0082",
+      "name": "Responder a insertar5"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "metricas_procesadas",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1024
+      ],
+      "id": "ad2a2888-1665-4613-8aa9-9d360f4f2875",
+      "name": "Eliminar metrica",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mediciones-create",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        656,
+        -352
+      ],
+      "id": "5954e7c1-a10f-4273-92a3-d26cecc6acd4",
+      "name": "Webhook12",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Medicion registrada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1072,
+        -352
+      ],
+      "id": "2d899a61-954b-4958-8bce-171733fdf4d4",
+      "name": "Responder a insertar6"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "mediciones_crudas",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $json[\"body\"][\"timestamp\"] }}"
+            },
+            {
+              "fieldId": "id_dispositivo",
+              "fieldValue": "={{ $json[\"body\"][\"id_dispositivo\"] }}"
+            },
+            {
+              "fieldId": "datos_brutos",
+              "fieldValue": "={{ $json[\"body\"][\"datos_brutos\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -352
+      ],
+      "id": "a41eceb3-09cc-4bea-b571-0ddad9477106",
+      "name": "Insertar mediciones",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mediciones-delete",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        656,
+        -160
+      ],
+      "id": "c70a19ef-855a-4a14-97fd-cd2dc353762b",
+      "name": "Webhook13",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Métrica actualizada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        816
+      ],
+      "id": "4b69ad15-757d-47c0-a59a-daf07ba3cd8e",
+      "name": "Responder a actualizar4"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "mediciones_crudas",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -160
+      ],
+      "id": "9765d846-9fb8-4497-aea2-472082e5703a",
+      "name": "Eliminar mediciones",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Medicion eliminada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1072,
+        -160
+      ],
+      "id": "e0eac81b-2e55-41a4-9116-f1abd587e39b",
+      "name": "Responder a eliminar3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "alertas-email",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        656,
+        48
+      ],
+      "id": "cdcc0736-2240-49ef-8758-f239bcff8d75",
+      "name": "Webhook14",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "alertas",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id_operador",
+              "fieldValue": "={{$json[\"body\"][\"id_operador\"]}}"
+            },
+            {
+              "fieldId": "nivel_alerta",
+              "fieldValue": "={{$json[\"body\"][\"nivel_alerta\"]}}"
+            },
+            {
+              "fieldId": "descripcion",
+              "fieldValue": "={{$json[\"body\"][\"descripcion\"]}}"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{$json[\"body\"][\"timestamp\"]}}"
+            },
+            {
+              "fieldId": "estado",
+              "fieldValue": "activa"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "1681d50e-9ff3-4360-b15a-4a0576f0b86f",
+      "name": "Ingresar alertas",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"Alerta enviada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1328,
+        176
+      ],
+      "id": "8c39196a-437e-4bb6-bd50-d65b29960c91",
+      "name": "Respuesta a alerta"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"body\"][\"email_destino\"]}}",
+        "subject": "=🚨 Nueva Alerta de Fatiga – Nivel {{$json[\"nivel_alerta\"]}}",
+        "message": "=<h2>⚠ Alerta de Fatiga Registrada</h2>\n\n<p><strong>Operador:</strong> {{$json[\"id_operador\"]}}</p>\n<p><strong>Nivel de Alerta:</strong> {{$json[\"nivel_alerta\"]}}</p>\n<p><strong>Descripción:</strong> {{$json[\"descripcion\"]}}</p>\n<p><strong>Fecha:</strong> {{$json[\"timestamp\"]}}</p>\n\n<hr>\n<p>La alerta ha sido registrada en Supabase correctamente.</p>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1296,
+        -32
+      ],
+      "id": "f399ae90-b777-400e-beeb-b9bdba2cc071",
+      "name": "Enviar",
+      "webhookId": "ce1f86e7-a4d6-49af-872e-6ac6b359172d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VVATbhyYlIROHVyA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1136,
+        64
+      ],
+      "id": "5d7e448d-30b2-4f27-b176-61012c3a24d9",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "informes-create",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        1504
+      ],
+      "id": "e8824282-501c-4475-9085-138f6957a440",
+      "name": "Webhook15",
+      "webhookId": "c1457b8d-fd99-4404-b45d-2cc1d594ecb2",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "informes",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "tipo_informe",
+              "fieldValue": "={{$json[\"body\"][\"tipo_informe\"]}}"
+            },
+            {
+              "fieldId": "parametros_filtro",
+              "fieldValue": "={{$json[\"body\"][\"parametros_filtro\"]}}"
+            },
+            {
+              "fieldId": "archivo_pdf_base64",
+              "fieldValue": "={{$json[\"body\"][\"archivo_pdf_base64\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        1504
+      ],
+      "id": "32951366-efa0-487d-a6be-eb31e07c3347",
+      "name": "Insertar datos",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DpYyBKKcplgpkSXe",
+          "name": "Supabase cesar"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -32,
+        1504
+      ],
+      "id": "ceac4ff1-f61e-4692-8279-e0770eb1eb60",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer el base64 CORRECTAMENTE desde body\nconst pdfBase64 = $json.body?.archivo_pdf_base64;\n\nif (!pdfBase64) {\n    throw new Error(\"No llegó archivo_pdf_base64 en body\");\n}\n\nreturn [\n  {\n    json: {\n      tipo: $json.body.tipo_informe,\n      parametros: $json.body.parametros_filtro\n    },\n    binary: {\n      data: {\n        data: Buffer.from(pdfBase64, \"base64\"),\n        mimeType: \"application/pdf\",\n        fileName: `informe_${Date.now()}.pdf`\n      }\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        1312
+      ],
+      "id": "079bd9e3-04cd-40e1-b77e-b87827ae9543",
+      "name": "convertir Base64"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "=1212966207",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "Informe generado automáticamente ✔"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        1312
+      ],
+      "id": "abc6239a-5e46-4558-9f9c-449264b570a8",
+      "name": "Enviar informe",
+      "webhookId": "8f39fd90-8427-4aa3-bc8a-9c4d0f5daf3c",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "foJ1AiNheLlxdyXP",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Insertar operador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar operador": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar operador": {
+      "main": [
+        [
+          {
+            "node": "Responder a actualizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar operador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Eliminar operador1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Insertar dispositivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar dispositivo": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook4": {
+      "main": [
+        [
+          {
+            "node": "Actualizar dispositivo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar dispositivo1": {
+      "main": [
+        [
+          {
+            "node": "Responder a actualizar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook5": {
+      "main": [
+        [
+          {
+            "node": "Eliminar dispositivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar dispositivo": {
+      "main": [
+        [
+          {
+            "node": "Responder a eliminar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook6": {
+      "main": [
+        [
+          {
+            "node": "Insertar usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook7": {
+      "main": [
+        [
+          {
+            "node": "Flatten Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Traer contraseña actual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook8": {
+      "main": [
+        [
+          {
+            "node": "Eliminar usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar usuario": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar usuario": {
+      "main": [
+        [
+          {
+            "node": "Responder a actualizar2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar usuario": {
+      "main": [
+        [
+          {
+            "node": "Responder a eliminar2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar operador1": {
+      "main": [
+        [
+          {
+            "node": "Responder a eliminar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer contraseña actual": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "¿nueva_contrasena viene vacía?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿nueva_contrasena viene vacía?": {
+      "main": [
+        [
+          {
+            "node": "mezclar resultado del crypto con los demás datos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mezclar resultado del crypto con los demás datos": {
+      "main": [
+        [
+          {
+            "node": "Actualizar usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Actualizar usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook9": {
+      "main": [
+        [
+          {
+            "node": "Insertar metrica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar metrica": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook10": {
+      "main": [
+        [
+          {
+            "node": "Actualizar metrica1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar metrica1": {
+      "main": [
+        [
+          {
+            "node": "Responder a actualizar4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook11": {
+      "main": [
+        [
+          {
+            "node": "Eliminar metrica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar metrica": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook12": {
+      "main": [
+        [
+          {
+            "node": "Insertar mediciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar mediciones": {
+      "main": [
+        [
+          {
+            "node": "Responder a insertar6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook13": {
+      "main": [
+        [
+          {
+            "node": "Eliminar mediciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar mediciones": {
+      "main": [
+        [
+          {
+            "node": "Responder a eliminar3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook14": {
+      "main": [
+        [
+          {
+            "node": "Ingresar alertas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Ingresar alertas": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a alerta",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Enviar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook15": {
+      "main": [
+        [
+          {
+            "node": "convertir Base64",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insertar datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar datos": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "convertir Base64": {
+      "main": [
+        [
+          {
+            "node": "Enviar informe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4c04aef4-9db8-4bcd-aa97-14cff2d740b1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f6f5289888744d99cf42760a26b6bddf0dcf4567fec54727993707b46d9a613f"
+  },
+  "id": "LDsvtxEte9H60taL",
+  "tags": []
+}

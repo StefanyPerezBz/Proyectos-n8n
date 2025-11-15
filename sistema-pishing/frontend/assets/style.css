@@ -1,0 +1,9 @@
+body {
+    background-color: #f9fafc;
+}
+.block-container {
+    padding-top: 2rem;
+}
+h1, h2, h3 {
+    color: #1f77b4;
+}

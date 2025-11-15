@@ -1,0 +1,537 @@
+{
+  "name": "Laboratorio 11",
+  "nodes": [
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "url_analysis",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "url",
+              "fieldValue": "={{$json[\"body\"][\"url\"]}}"
+            },
+            {
+              "fieldId": "created_by",
+              "fieldValue": "={{$json[\"body\"][\"created_by\"]}}"
+            },
+            {
+              "fieldId": "url_hash",
+              "fieldValue": "={{$json[\"body\"][\"analysis_result\"][\"features\"][\"domain\"]}}"
+            },
+            {
+              "fieldId": "analysis_result",
+              "fieldValue": "={{$json[\"body\"][\"analysis_result\"]}}"
+            },
+            {
+              "fieldId": "risk_level",
+              "fieldValue": "={{$json[\"body\"][\"risk_level\"]}}"
+            },
+            {
+              "fieldId": "prediction",
+              "fieldValue": "={{$json[\"body\"][\"prediction\"]}}"
+            },
+            {
+              "fieldId": "probability",
+              "fieldValue": "={{$json[\"body\"][\"probability\"]}}"
+            },
+            {
+              "fieldId": "confidence",
+              "fieldValue": "={{$json[\"body\"][\"confidence\"]}}"
+            },
+            {
+              "fieldId": "features_extracted",
+              "fieldValue": "={{Object.keys($json[\"body\"][\"analysis_result\"][\"features\"]).length}}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{$now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -112
+      ],
+      "id": "da02c431-b926-4f7e-b695-beee58591230",
+      "name": "Insertar registro",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase cuenta personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "url_analysis",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json[\"body\"][\"url\"] }}"
+            },
+            {
+              "fieldId": "analysis_result",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"] }}"
+            },
+            {
+              "fieldId": "prediction",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"][\"prediction\"] }}"
+            },
+            {
+              "fieldId": "risk_level",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"][\"risk_level\"] }}"
+            },
+            {
+              "fieldId": "probability",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"][\"probability\"] }}"
+            },
+            {
+              "fieldId": "confidence",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"][\"confidence\"] }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        96
+      ],
+      "id": "34a940f8-608c-4475-a3de-38cb0dcafb2e",
+      "name": "Actualizar registro en Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase cuenta personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"✅ URL actualizada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -256,
+        96
+      ],
+      "id": "ff3a2863-45f0-4012-b623-d34143dc328e",
+      "name": "Respuesta a actualizar"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"✅ URL registrada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -320,
+        -112
+      ],
+      "id": "aabb5be4-948e-4ec4-af08-5e6e047d6e7c",
+      "name": "Respuesta a registro"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "url_analysis",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"body\"][\"id\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        320
+      ],
+      "id": "364a05d9-3608-494b-8d1a-f8bc5bf82eef",
+      "name": "Eliminar registro en Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase cuenta personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"✅ URL eliminada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -256,
+        320
+      ],
+      "id": "078b321b-024b-4b3a-b2e9-d81044750c45",
+      "name": "Respuesta a eliminar"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "url_analysis",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json[\"body\"][\"url\"] }}"
+            },
+            {
+              "fieldId": "analysis_result",
+              "fieldValue": "={{ $json[\"body\"][\"analysis_result\"] }}"
+            },
+            {
+              "fieldId": "prediction",
+              "fieldValue": "={{ $json[\"body\"][\"prediction\"] }}"
+            },
+            {
+              "fieldId": "risk_level",
+              "fieldValue": "={{ $json[\"body\"][\"risk_level\"] }}"
+            },
+            {
+              "fieldId": "probability",
+              "fieldValue": "={{ $json[\"body\"][\"probability\"] }}"
+            },
+            {
+              "fieldId": "confidence",
+              "fieldValue": "={{ $json[\"body\"][\"confidence\"] }}"
+            },
+            {
+              "fieldId": "created_by",
+              "fieldValue": "={{ $json[\"body\"][\"created_by\"] }}"
+            },
+            {
+              "fieldId": "url_hash",
+              "fieldValue": "={{ $json[\"body\"][\"url\"].split('://').pop() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -96
+      ],
+      "id": "44723bd1-a999-4d5f-9947-d272e4896a18",
+      "name": "Insertar csv",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase cuenta personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"ok\",\n  \"message\": \"✅ csv registrada exitosamente\",\n  \"inserted\": {{ JSON.stringify($json) }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        432,
+        -96
+      ],
+      "id": "1b991f84-88c1-4ebb-883a-a7aee611023c",
+      "name": "Respuesta a csv insertar"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "1212966207",
+        "binaryData": true,
+        "binaryPropertyName": "file",
+        "additionalFields": {
+          "caption": "=📊 Reporte de Phishing generado automáticamente  "
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        112
+      ],
+      "id": "549f5587-4816-426b-b0a9-838d365b9089",
+      "name": "Enviar documento",
+      "webhookId": "14f6c8c5-7cea-4826-adb6-c64de7e7ad7a",
+      "credentials": {
+        "telegramApi": {
+          "id": "foJ1AiNheLlxdyXP",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        464,
+        112
+      ],
+      "id": "ebbc6418-ec4d-4892-aa9b-1ccbe72b2807",
+      "name": "Respuesta a reporte"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-url",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        -112
+      ],
+      "id": "837939c2-0a7e-402f-9d79-c945973e0418",
+      "name": "Crear URL",
+      "webhookId": "e8e7a6e3-08be-40c4-b024-f69e0453a66a"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-url",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        96
+      ],
+      "id": "c1f8feaf-acdb-4fa0-ba4a-4186880352dd",
+      "name": "Actualizar URL",
+      "webhookId": "424ee32b-6ee1-497c-b0d9-3b55007a1bbf"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "delete-url",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        320
+      ],
+      "id": "ae083e1e-0662-48f7-8adc-5ef822105b6f",
+      "name": "Eliminar URL",
+      "webhookId": "424ee32b-6ee1-497c-b0d9-3b55007a1bbf"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "csv-batch",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -96
+      ],
+      "id": "494481aa-cd49-4245-8a96-3e2a796a18b7",
+      "name": "CSV",
+      "webhookId": "7dc6b03c-3802-41e7-a339-4a883c10d5ca"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-pdf",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        112
+      ],
+      "id": "1b9f205f-7b0c-48a2-9ac3-ecedf01d5980",
+      "name": "Generar reporte",
+      "webhookId": "2d864e4d-c8d7-474a-9eff-ae72bb05cd3e"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Insertar registro": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar registro en Supabase": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a actualizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar registro en Supabase": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a eliminar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar csv": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a csv insertar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar documento": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a reporte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear URL": {
+      "main": [
+        [
+          {
+            "node": "Insertar registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar URL": {
+      "main": [
+        [
+          {
+            "node": "Actualizar registro en Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar URL": {
+      "main": [
+        [
+          {
+            "node": "Eliminar registro en Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CSV": {
+      "main": [
+        [
+          {
+            "node": "Insertar csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar reporte": {
+      "main": [
+        [
+          {
+            "node": "Enviar documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a16b7a5a-8aa2-4a56-a9e4-c01c7b840587",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f6f5289888744d99cf42760a26b6bddf0dcf4567fec54727993707b46d9a613f"
+  },
+  "id": "7KHX8dHUn6scg6w2",
+  "tags": []
+}

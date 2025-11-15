@@ -1,0 +1,12 @@
+streamlit
+pandas
+plotly
+requests
+fastapi
+uvicorn
+supabase
+pandas
+requests
+python-dotenv
+asyncpg
+fpdf2

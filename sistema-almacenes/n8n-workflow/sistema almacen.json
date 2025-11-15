@@ -1,0 +1,957 @@
+{
+  "name": "Examen_laboratorio",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const body = items[0].json;\n\n// Validar que venga la descripción\nif (!body.descripcion || body.descripcion.trim() === \"\") {\n  return [\n    {\n      json: {\n        ok: false,\n        error: \"Falta el campo 'descripcion' para crear la línea\",\n        recibido: body\n      }\n    }\n  ];\n}\n\n// Limpiar texto\nreturn [\n  {\n    json: {\n      descripcion: body.descripcion.trim()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -304
+      ],
+      "id": "33ad80ab-464f-4a8d-970d-6986ab04f497",
+      "name": "Validar datos"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Campos requeridos\nconst camposObligatorios = [\"descripcion\", \"precio\", \"stock\", \"reorden\", \"idLinea\"];\nconst body = $json.body || {};\n\nlet errores = [];\n\n// 1️⃣ Verificar campos faltantes\nfor (const campo of camposObligatorios) {\n  if (body[campo] === undefined || body[campo] === null || body[campo] === \"\") {\n    errores.push(`Falta el campo: ${campo}`);\n  }\n}\n\n// 2️⃣ Si falta alguno, retornar error inmediato\nif (errores.length > 0) {\n  return [\n    {\n      json: {\n        ok: false,\n        error: errores.join(\", \"),\n        recibido: $json\n      }\n    }\n  ];\n}\n\n// 3️⃣ Limpiar y normalizar tipos\nconst producto = {\n  descripcion: String(body.descripcion).trim(),\n  precio: parseFloat(body.precio),\n  stock: parseInt(body.stock),\n  reorden: parseInt(body.reorden),\n  idLinea: parseInt(body.idLinea)\n};\n\n// 4️⃣ Validar tipos de datos\nif (isNaN(producto.precio) || isNaN(producto.stock) || isNaN(producto.reorden) || isNaN(producto.idLinea)) {\n  return [\n    {\n      json: {\n        ok: false,\n        error: \"Campos numéricos inválidos o no convertibles a número.\",\n        recibido: body\n      }\n    }\n  ];\n}\n\n// 5️⃣ Si todo bien, devolver objeto limpio\nreturn [\n  {\n    json: {\n      ok: true,\n      data: producto\n    }\n  }\n];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        -320
+      ],
+      "id": "d0a5b107-58a6-462d-9ae8-eff4062e7df0",
+      "name": "Validar y limpiar datos"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "linea",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "descripcion",
+              "fieldValue": "={{$json[\"recibido\"][\"body\"][\"descripcion\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -304
+      ],
+      "id": "ee8f4fa3-3995-4102-8c00-ad34960560e7",
+      "name": "Insertar linea",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "producto",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "descripcion",
+              "fieldValue": "={{$json[\"data\"][\"descripcion\"]}}"
+            },
+            {
+              "fieldId": "precio",
+              "fieldValue": "={{$json[\"data\"][\"precio\"]}}"
+            },
+            {
+              "fieldId": "stock",
+              "fieldValue": "={{$json[\"data\"][\"stock\"]}}"
+            },
+            {
+              "fieldId": "reorden",
+              "fieldValue": "={{$json[\"data\"][\"reorden\"]}}"
+            },
+            {
+              "fieldId": "idLinea",
+              "fieldValue": "={{$json[\"data\"][\"idLinea\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -320
+      ],
+      "id": "e10011bc-ce81-4678-bd99-d6d165ba9206",
+      "name": "Insertar producto",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "crear-linea",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        -304
+      ],
+      "id": "6abecf23-60b1-4ba5-b78b-b2931561ce63",
+      "name": "Registro linea",
+      "webhookId": "281226ea-851d-4daa-a5c4-ba1d70dfff78"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "crear-producto",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -752,
+        -320
+      ],
+      "id": "fd03ae43-d5fe-4841-b18c-d22663f06f77",
+      "name": "Registro producto",
+      "webhookId": "796cc701-24b6-4810-ac39-6d4c1047a71e"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Producto registrado correctamente\",\n  \"producto\": \"{{$json['data']['descripcion']}}\"\n}\n",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -112,
+        -320
+      ],
+      "id": "5cadc193-2354-43a4-a31f-d94a0b2b92eb",
+      "name": "Respuesta"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Línea creada correctamente\",\n  \"data\": {\n    \"descripcion\": \"{{$json['recibido']['body']['descripcion']}}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        880,
+        -304
+      ],
+      "id": "1dcae8c1-8e4d-478a-98bc-7323bacb0958",
+      "name": "Respuesta1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Línea actualizada correctamente\",\n  \"updated_id\": \"{{$json.idLinea}}\",\n  \"new_value\": \"{{$json.descripcion}}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "e0077aa1-c532-4984-9c88-5d2d849fbf4a",
+      "name": "Respuesta2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "actualizar-linea",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        -96
+      ],
+      "id": "dfbbbb3f-b1a7-4740-8be8-b1f738b35427",
+      "name": "Editar linea",
+      "webhookId": "6205e5c3-2cba-4674-8014-c8888e18d0b8"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "linea",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "idLinea",
+              "condition": "eq",
+              "keyValue": "={{$json[\"body\"][\"idLinea\"]}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "descripcion",
+              "fieldValue": "={{$json[\"body\"][\"descripcion\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        464,
+        -96
+      ],
+      "id": "4435d582-b9e7-442b-b34b-92a21cd4103a",
+      "name": "Actualizar linea",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "eliminar-linea",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        144
+      ],
+      "id": "815797bf-e057-4d95-8c5e-b4fccdca6287",
+      "name": "Eliminar linea",
+      "webhookId": "b9e4fee7-1719-404a-b352-1e127b526f58"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "linea",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "idLinea",
+              "condition": "eq",
+              "keyValue": "={{$json[\"body\"][\"idLinea\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        464,
+        144
+      ],
+      "id": "45b57b89-e39a-4bfc-97fc-e8182f279e83",
+      "name": "Eliminar linea1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Línea eliminada correctamente\",\n  \"deleted_id\": \"{{$json.idLinea}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        672,
+        144
+      ],
+      "id": "158ea3fd-2a7b-4dee-b937-6fffc3ad314d",
+      "name": "Respuesta3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Campos requeridos\nconst camposObligatorios = [\"codigo\", \"descripcion\", \"precio\", \"stock\", \"reorden\"];\nconst body = $json.body || {};\n\nlet errores = [];\n\n// 1️⃣ Verificar campos faltantes\nfor (const campo of camposObligatorios) {\n  if (body[campo] === undefined || body[campo] === null || body[campo] === \"\") {\n    errores.push(`Falta el campo: ${campo}`);\n  }\n}\n\nif (errores.length > 0) {\n  return [{\n    json: {\n      ok: false,\n      error: errores.join(\", \"),\n      recibido: $json\n    }\n  }];\n}\n\n// 2️⃣ Limpieza y tipos correctos\nconst producto = {\n  codigo: parseInt(body.codigo),\n  descripcion: String(body.descripcion).trim(),\n  precio: parseFloat(body.precio),\n  stock: parseInt(body.stock),\n  reorden: parseInt(body.reorden),\n};\n\n// 3️⃣ Validar tipos\nif (\n  isNaN(producto.codigo) ||\n  isNaN(producto.precio) ||\n  isNaN(producto.stock) ||\n  isNaN(producto.reorden)\n) {\n  return [{\n    json: {\n      ok: false,\n      error: \"Campos numéricos inválidos o no convertibles a número.\",\n      recibido: body\n    }\n  }];\n}\n\n// 4️⃣ Retornar objeto limpio\nreturn [{\n  json: {\n    ok: true,\n    data: producto\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        -112
+      ],
+      "id": "579c5b0f-0ed9-4b88-ba87-d1063db1366b",
+      "name": "Validar y limpiar datos1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "actualizar-producto",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -752,
+        -112
+      ],
+      "id": "0090aca2-c8df-40e0-9cbc-5edab719b606",
+      "name": "Actualizar producto",
+      "webhookId": "efad73e5-27f4-414e-b36f-fe42d575da2b"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "update",
+        "tableId": "producto",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "codigo",
+              "condition": "eq",
+              "keyValue": "={{$json[\"data\"][\"codigo\"]}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "descripcion",
+              "fieldValue": "={{$json[\"data\"][\"descripcion\"]}}"
+            },
+            {
+              "fieldId": "precio",
+              "fieldValue": "={{$json[\"data\"][\"precio\"]}}"
+            },
+            {
+              "fieldId": "stock",
+              "fieldValue": "={{$json[\"data\"][\"stock\"]}}"
+            },
+            {
+              "fieldId": "reorden",
+              "fieldValue": "={{$json[\"data\"][\"reorden\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -112
+      ],
+      "id": "d78387ce-7131-4bf6-a24a-86cc9012f9ea",
+      "name": "Actualizar producto1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Producto actualizado correctamente\",\n  \"codigo\": \"{{$json['data']['codigo']}}\",\n  \"descripcion\": \"{{$json['data']['descripcion']}}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        -112
+      ],
+      "id": "8ba5659f-3620-476d-aa6b-f86f8683f924",
+      "name": "Respuesta4"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "eliminar-producto",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -752,
+        80
+      ],
+      "id": "b667dd7f-3549-42c3-8fa7-59b093f9ffe1",
+      "name": "Webhook",
+      "webhookId": "31676525-56d2-4c83-ae37-39f8a1874714"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrae datos del cuerpo\nconst body = $json.body || {};\nconst errores = [];\n\n// Validación básica\nif (body.codigo === undefined || body.codigo === null || body.codigo === \"\") {\n  errores.push(\"Falta el campo: codigo\");\n} else if (isNaN(parseInt(body.codigo))) {\n  errores.push(\"El campo 'codigo' debe ser numérico\");\n}\n\n// Si hay errores, detener flujo\nif (errores.length > 0) {\n  return [{\n    json: {\n      ok: false,\n      error: errores.join(\", \"),\n      recibido: $json\n    }\n  }];\n}\n\n// Si todo OK, devolver limpio\nreturn [{\n  json: {\n    ok: true,\n    data: { codigo: parseInt(body.codigo) }\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        80
+      ],
+      "id": "caa47107-6db0-4359-a7fc-4ff54f2cf14f",
+      "name": "Validar y limpiar datos2"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "delete",
+        "tableId": "producto",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "codigo",
+              "condition": "eq",
+              "keyValue": "={{$json[\"data\"][\"codigo\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        80
+      ],
+      "id": "276ea846-ff5d-452f-ad23-6971cdd2f84e",
+      "name": "Eliminar producto",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Producto eliminado correctamente\",\n  \"codigo\": \"{{$json['data']['codigo']}}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        80
+      ],
+      "id": "a0f5c41a-f875-4e66-b1af-91f7bfac42c4",
+      "name": "Respuesta5"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "alerts-stock",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1856,
+        -272
+      ],
+      "id": "167fcd7c-e673-4f01-93a7-dc25ccfc8491",
+      "name": "Alertas",
+      "webhookId": "1fbe0e49-9cfd-44ef-ba80-ddeb05ec9fa6"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || {};\nconst items = body.items || [];\nconst destinatario = (body.destinatarios && body.destinatarios[0]) || \"admin@tuempresa.com\";\n\nif (items.length === 0) {\n  return [\n    {\n      json: {\n        ok: false,\n        error: \"No hay productos con stock bajo para enviar.\",\n      }\n    }\n  ];\n}\n\n// Generar cuerpo del mensaje\nlet tabla = items.map(\n  (p) =>\n    `<tr>\n      <td>${p.codigo}</td>\n      <td>${p.descripcion}</td>\n      <td>${p.stock}</td>\n      <td>${p.reorden}</td>\n    </tr>`\n).join(\"\");\n\nconst html = `\n  <h2>🚨 Alerta de Stock Bajo</h2>\n  <p>Se detectaron los siguientes productos con stock igual o menor al nivel de reorden:</p>\n  <table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;\">\n    <thead>\n      <tr><th>Código</th><th>Descripción</th><th>Stock</th><th>Reorden</th></tr>\n    </thead>\n    <tbody>${tabla}</tbody>\n  </table>\n  <p><strong>Total de productos:</strong> ${items.length}</p>\n  <p>📦 Sistema de Gestión de Almacén</p>\n`;\n\nreturn [\n  {\n    json: {\n      destinatario,\n      asunto: `🚨 Alerta de Stock Bajo (${items.length} productos)`,\n      mensaje: html\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1648,
+        -272
+      ],
+      "id": "d3221f56-d007-4bb2-864b-00795be0e111",
+      "name": "Preparar Mensaje de Alerta"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"destinatario\"]}}",
+        "subject": "={{$json[\"asunto\"]}}",
+        "message": "={{$json[\"mensaje\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1440,
+        -272
+      ],
+      "id": "ce2c6cbb-222d-4a58-9200-74498df48216",
+      "name": "Send a message",
+      "webhookId": "b59030b2-dabc-41c0-98ce-9a1acf5600f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "VVATbhyYlIROHVyA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"Alerta de stock enviada correctamente a {{$json['destinatario']}}\"\n}\n",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -1232,
+        -272
+      ],
+      "id": "aee6b2ed-5ca8-4202-a8a7-1a196940a9a3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "reports",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2288,
+        0
+      ],
+      "id": "37e0fd52-cab7-4a29-8e4c-6c4a8de7fa70",
+      "name": "Webhook1",
+      "webhookId": "215ad49f-68b2-43b7-91ec-afa145bfafdc"
+    },
+    {
+      "parameters": {
+        "respondWith": "binary",
+        "responseDataSource": "set",
+        "inputFieldName": "=data",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -1024,
+        -64
+      ],
+      "id": "efdaaf69-27fa-4d47-8164-800048f64bd7",
+      "name": "Respuesta6"
+    },
+    {
+      "parameters": {
+        "jsCode": "const tipo = ($json.body?.report_type || \"inventario\").toLowerCase();\n\nlet titulo = \"📦 Reporte de Inventario General\";\nif (tipo === \"bajo stock\") titulo = \"⚠️ Reporte de Productos con Stock Bajo\";\nif (tipo === \"valorizado\") titulo = \"💰 Reporte Valorizado del Inventario\";\n\nreturn [{\n  json: {\n    tipo,\n    titulo,\n    fecha: new Date().toLocaleString(\"es-PE\", { timeZone: \"America/Lima\" })\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2080,
+        0
+      ],
+      "id": "7b1e034b-1f7a-4311-99ba-ec570092556f",
+      "name": "Preparar tipo de reporte"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "getAll",
+        "tableId": "producto",
+        "returnAll": true,
+        "matchType": "allFilters"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1840,
+        -80
+      ],
+      "id": "769f6f71-0ff6-4550-b55f-b71ae8c4f483",
+      "name": "Obtener datos",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UAEyYvfaxZfmoVdD",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ✅ Obtener todos los productos de los items anteriores\nconst datos = $items().map(item => item.json);\nconst tipo = $json.tipo || \"inventario\";\nconst titulo = $json.titulo || \"Reporte de Inventario\";\nconst fecha = $json.fecha || new Date().toLocaleString(\"es-PE\", { timeZone: \"America/Lima\" });\n\nlet filtrados = datos;\n\nif (tipo === \"bajo stock\") {\n  filtrados = datos.filter(p => p.stock <= p.reorden);\n}\n\nlet total = filtrados.length;\n\nlet tabla = filtrados.map(p => `\n  <tr>\n    <td>${p.codigo}</td>\n    <td>${p.descripcion}</td>\n    <td>${p.stock}</td>\n    <td>${p.reorden}</td>\n    <td>S/ ${Number(p.precio).toFixed(2)}</td>\n  </tr>\n`).join(\"\");\n\nif (!tabla) {\n  tabla = `<tr><td colspan=\"5\" style=\"text-align:center;\">Sin datos para mostrar</td></tr>`;\n}\n\nreturn [{\n  json: {\n    tipo,\n    html: `\n    <html>\n      <head>\n        <meta charset=\"utf-8\">\n        <style>\n          body { font-family: 'Arial', sans-serif; padding: 40px; color: #333; }\n          h1 { color: #007BFF; text-align: center; }\n          p { text-align: center; }\n          .fecha { font-size: 12px; color: #777; text-align: right; }\n          table { width: 100%; border-collapse: collapse; margin-top: 20px; }\n          th, td { border: 1px solid #ccc; padding: 8px; text-align: center; font-size: 13px; }\n          th { background-color: #007BFF; color: white; }\n          .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #777; }\n        </style>\n      </head>\n      <body>\n        <h1>${titulo}</h1>\n        <p class=\"fecha\">Generado el ${fecha}</p>\n        <table>\n          <thead>\n            <tr>\n              <th>Código</th>\n              <th>Descripción</th>\n              <th>Stock</th>\n              <th>Reorden</th>\n              <th>Precio (S/.)</th>\n            </tr>\n          </thead>\n          <tbody>${tabla}</tbody>\n        </table>\n        <p class=\"footer\">\n          📄 Total de productos: <b>${total}</b> <br><br>\n          Sistema de Gestión de Almacén — AMC\n        </p>\n      </body>\n    </html>\n    `\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1632,
+        -80
+      ],
+      "id": "60953363-2444-4f93-a835-51f7c3abc225",
+      "name": "Generar HTML"
+    },
+    {
+      "parameters": {
+        "filename": "=reporte_{{$json[\"tipo\"]}}.pdf"
+      },
+      "type": "n8n-nodes-html-to-pdf-free.htmlToPdf",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        -64
+      ],
+      "id": "4b20f056-a8e0-43ec-a9fc-f2b9283049ee",
+      "name": "Convertir a PDF"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1616,
+        144
+      ],
+      "id": "a2550357-81f9-4e42-a537-34cb84788c01",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Validar datos": {
+      "main": [
+        [
+          {
+            "node": "Insertar linea",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y limpiar datos": {
+      "main": [
+        [
+          {
+            "node": "Insertar producto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar linea": {
+      "main": [
+        [
+          {
+            "node": "Respuesta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar producto": {
+      "main": [
+        [
+          {
+            "node": "Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registro linea": {
+      "main": [
+        [
+          {
+            "node": "Validar datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registro producto": {
+      "main": [
+        [
+          {
+            "node": "Validar y limpiar datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Editar linea": {
+      "main": [
+        [
+          {
+            "node": "Actualizar linea",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar linea": {
+      "main": [
+        [
+          {
+            "node": "Respuesta2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar linea": {
+      "main": [
+        [
+          {
+            "node": "Eliminar linea1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar linea1": {
+      "main": [
+        [
+          {
+            "node": "Respuesta3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y limpiar datos1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar producto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar producto": {
+      "main": [
+        [
+          {
+            "node": "Validar y limpiar datos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar producto1": {
+      "main": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar y limpiar datos2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar y limpiar datos2": {
+      "main": [
+        [
+          {
+            "node": "Eliminar producto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar producto": {
+      "main": [
+        [
+          {
+            "node": "Respuesta5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alertas": {
+      "main": [
+        [
+          {
+            "node": "Preparar Mensaje de Alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Mensaje de Alerta": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Preparar tipo de reporte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar tipo de reporte": {
+      "main": [
+        [
+          {
+            "node": "Obtener datos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Obtener datos": {
+      "main": [
+        [
+          {
+            "node": "Generar HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar HTML": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a PDF": {
+      "main": [
+        [
+          {
+            "node": "Respuesta6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Convertir a PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ac665f87-791f-47e8-8717-a905e7ba3153",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f6f5289888744d99cf42760a26b6bddf0dcf4567fec54727993707b46d9a613f"
+  },
+  "id": "8M2GNdGSkP3dBNSJ",
+  "tags": []
+}

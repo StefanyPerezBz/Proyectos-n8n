@@ -1,0 +1,5 @@
+| Rol                  | Usuario      | Email                | Contraseña        |
+| -------------------- | ------------ | -------------------- | ----------------- |
+| Administrador        | `admin`      | `admin@zai.com`      | **admin123**      |
+| Supervisor           | `supervisor` | `supervisor@zai.com` | **supervisor123** |
+| Gerente de Seguridad | `seguridad`  | `seguridad@zai.com`  | **seguridad123**  |
