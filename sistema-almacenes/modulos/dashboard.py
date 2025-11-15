@@ -4,14 +4,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # ============================================================
-# 📊 DASHBOARD GENERAL DEL ALMACÉN
+# DASHBOARD GENERAL DEL ALMACÉN
 # ============================================================
 def mostrar_dashboard(db):
     st.title("📊 Panel de Estadísticas del Almacén")
     st.markdown("Visualización general de **productos**, **líneas** y **rendimiento del inventario**.")
 
     # ======================================================
-    # 🔹 Cargar datos
+    # Cargar datos
     # ======================================================
     productos = db.leer_productos() or []
     lineas = db.leer_lineas() or []
@@ -26,7 +26,7 @@ def mostrar_dashboard(db):
         df["idLinea"] = df["id_linea"]
 
     # ======================================================
-    # 🔹 Sección: Métricas globales
+    # Sección: Métricas globales
     # ======================================================
     col1, col2, col3, col4 = st.columns(4)
     total_productos = len(df)
@@ -42,7 +42,7 @@ def mostrar_dashboard(db):
     st.divider()
 
     # ======================================================
-    # 🔹 Sección: Estadísticas descriptivas
+    # Sección: Estadísticas descriptivas
     # ======================================================
     st.subheader("📈 Estadísticas Descriptivas")
     stats = df[["precio", "stock", "reorden"]].describe().T
@@ -55,10 +55,10 @@ def mostrar_dashboard(db):
     st.divider()
 
     # ======================================================
-    # 🔹 Gráficos — Distribuciones y comparaciones
+    # Gráficos — Distribuciones y comparaciones
     # ======================================================
 
-    # 1️⃣ Stock por producto
+    # Stock por producto
     st.subheader("📦 Stock por Producto")
     fig_stock = px.bar(
         df,
@@ -71,7 +71,7 @@ def mostrar_dashboard(db):
     fig_stock.update_layout(xaxis_title="Producto", yaxis_title="Stock", template="plotly_white")
     st.plotly_chart(fig_stock, use_container_width=True)
 
-    # 2️⃣ Valor total por producto
+    # Valor total por producto
     st.subheader("💰 Valor Económico por Producto")
     df["valor_total"] = df["precio"] * df["stock"]
     fig_valor = px.bar(
@@ -85,7 +85,7 @@ def mostrar_dashboard(db):
     fig_valor.update_layout(xaxis_title="Producto", yaxis_title="Valor (S/.)")
     st.plotly_chart(fig_valor, use_container_width=True)
 
-    # 3️⃣ Relación Precio vs Stock
+    # Relación Precio vs Stock
     st.subheader("📊 Relación entre Precio y Stock")
     fig_dispersion = px.scatter(
         df,
@@ -101,7 +101,7 @@ def mostrar_dashboard(db):
     st.plotly_chart(fig_dispersion, use_container_width=True)
 
     # ======================================================
-    # 🔹 Comparación entre líneas
+    # Comparación entre líneas
     # ======================================================
     if lineas:
         st.subheader("🏷️ Comparativa entre Líneas de Producto")
@@ -144,7 +144,7 @@ def mostrar_dashboard(db):
     st.divider()
 
     # ======================================================
-    # 🔹 Evolución temporal (si hay timestamps)
+    # Evolución temporal
     # ======================================================
     if "created_at" in df.columns:
         st.subheader("🕒 Evolución de Registro de Productos")
@@ -161,7 +161,7 @@ def mostrar_dashboard(db):
         st.plotly_chart(fig_linea_tiempo, use_container_width=True)
 
     # ======================================================
-    # 🔹 Dashboard resumen
+    # Dashboard resumen
     # ======================================================
     st.markdown("## 🧭 Dashboard General del Almacén")
     st.info("Resumen visual de métricas clave y comportamiento del inventario.")
