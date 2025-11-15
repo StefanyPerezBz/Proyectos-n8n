@@ -3,7 +3,7 @@ import pandas as pd
 import time
 
 # =====================================================
-# 🚨 ENVIAR ALERTAS DE STOCK BAJO (vía webhook Gmail)
+# ENVIAR ALERTAS DE STOCK BAJO (vía webhook Gmail)
 # =====================================================
 def disparar_alertas(db, n8n):
     st.subheader("🚨 Enviar Alertas de Stock Bajo")
