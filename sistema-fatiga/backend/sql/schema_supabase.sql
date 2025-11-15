@@ -99,7 +99,6 @@ ALTER TABLE metricas_procesadas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE alertas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE informes ENABLE ROW LEVEL SECURITY;
 
--- ✅ CORREGIDO: sin "IF NOT EXISTS"
 CREATE POLICY "Lectura pública operadores"
 ON operadores
 FOR SELECT
@@ -126,10 +125,3 @@ CREATE POLICY "Eliminar operadores"
 ON operadores
 FOR DELETE
 USING (true);
-
-
--- =====================================
--- USUARIOS PREDEFINIDOS FUNCIONALES
--- =====================================
-
-DELETE FROM usuarios_sistema;
