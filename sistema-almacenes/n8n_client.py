@@ -17,7 +17,7 @@ class N8NClient:
         self.delete_product_webhook = os.getenv("N8N_DELETE_PRODUCT_WEBHOOK") or st.secrets.get("N8N_DELETE_PRODUCT_WEBHOOK")
 
     # ===================================================
-    # 🧩 1. CREAR PRODUCTO
+    # CREAR PRODUCTO
     # ===================================================
     def crear_producto(self, data: dict):
         if not self.create_product_webhook:
@@ -30,7 +30,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # ✏️ 2. ACTUALIZAR PRODUCTO - MÉTODO FALTANTE
+    # ACTUALIZAR PRODUCTO
     # ===================================================
     def actualizar_producto(self, data: dict):
         """
@@ -47,7 +47,7 @@ class N8NClient:
 
 
     # ===================================================
-    # 🗑️ 3. ELIMINAR PRODUCTO
+    # ELIMINAR PRODUCTO
     # ===================================================
     def eliminar_producto(self, data: dict):
         if not self.delete_product_webhook:
@@ -60,7 +60,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # 🏷️ 4. CREAR LÍNEA
+    # CREAR LÍNEA
     # ===================================================
     def crear_linea(self, data: dict):
         if not self.create_linea_webhook:
@@ -73,7 +73,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # ✏️ 5. ACTUALIZAR LÍNEA
+    # ACTUALIZAR LÍNEA
     # ===================================================
     def actualizar_linea(self, data: dict):
         if not self.update_linea_webhook:
@@ -86,7 +86,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # 🗑️ 6. ELIMINAR LÍNEA
+    # ELIMINAR LÍNEA
     # ===================================================
     def eliminar_linea(self, data: dict):
         if not self.delete_linea_webhook:
@@ -99,7 +99,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # 🚨 7. ENVIAR ALERTAS
+    # ENVIAR ALERTAS
     # ===================================================
     def enviar_alerta(self, payload: dict):
         if not self.alerts_webhook:
@@ -112,7 +112,7 @@ class N8NClient:
             return {"ok": False, "error": str(e)}
 
     # ===================================================
-    # 🧾 8. GENERAR REPORTES
+    # GENERAR REPORTES
     # ===================================================
     def generar_reporte(self, payload: dict):
         if not self.reports_webhook:
