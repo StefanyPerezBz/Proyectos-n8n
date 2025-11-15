@@ -9,7 +9,7 @@ def show():
     st.title("📄 Generar Reporte PDF con Gráficos")
     st.markdown("Genera un **reporte detallado** con estadísticas, gráficos y registros recientes de las URLs analizadas.")
 
-    # 🎨 Estilo CSS global para botones pequeños y elegantes
+    # Estilo CSS global para botones pequeños y elegantes
     st.markdown("""
         <style>
         div.stButton > button, div.stDownloadButton > button {
@@ -30,7 +30,7 @@ def show():
     """, unsafe_allow_html=True)
 
     # ==============================================================
-    # 🧾 Botón para generar el reporte PDF
+    # Botón para generar el reporte PDF
     # ==============================================================
     if st.button("Generar Reporte PDF"):
         try:
