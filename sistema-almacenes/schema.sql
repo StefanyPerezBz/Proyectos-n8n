@@ -1,9 +1,9 @@
 -- ===========================================================
--- 📦 CREACIÓN DE TABLAS: LÍNEA y PRODUCTO
+-- CREACIÓN DE TABLAS: LÍNEA y PRODUCTO
 -- ===========================================================
 
 -- ===========================
--- 🏷️ TABLA: LINEA
+-- TABLA: LINEA
 -- ===========================
 CREATE TABLE IF NOT EXISTS public.LINEA (
     "idLinea" SERIAL PRIMARY KEY,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public.LINEA (
 );
 
 -- ===========================
--- 📦 TABLA: PRODUCTO
+-- TABLA: PRODUCTO
 -- ===========================
 CREATE TABLE IF NOT EXISTS public.PRODUCTO (
     codigo SERIAL PRIMARY KEY,
@@ -27,14 +27,14 @@ CREATE TABLE IF NOT EXISTS public.PRODUCTO (
 );
 
 -- ===========================
--- ⚙️ ÍNDICES DE RENDIMIENTO
+-- ÍNDICES DE RENDIMIENTO
 -- ===========================
 CREATE INDEX IF NOT EXISTS idx_producto_linea ON public.PRODUCTO("idLinea");
 CREATE INDEX IF NOT EXISTS idx_producto_descripcion ON public.PRODUCTO(descripcion);
 CREATE INDEX IF NOT EXISTS idx_producto_stock ON public.PRODUCTO(stock);
 
 -- ===========================================================
--- 🕓 TRIGGER AUTOMÁTICO PARA updated_at
+-- TRIGGER AUTOMÁTICO PARA updated_at
 -- ===========================================================
 -- Esta función actualiza automáticamente el campo updated_at
 -- cada vez que se modifica un registro.
@@ -62,9 +62,6 @@ EXECUTE FUNCTION public.set_updated_at();
 -- ===========================================================
 -- 🔐 POLÍTICAS DE SEGURIDAD (para desarrollo)
 -- ===========================================================
--- Si usas la anon key, esto permite que Streamlit / n8n / Supabase JS accedan sin restricciones.
--- En producción, podrías limitar por rol o user_id si lo deseas.
-
 ALTER TABLE public.LINEA ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.PRODUCTO ENABLE ROW LEVEL SECURITY;
 
