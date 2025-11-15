@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 from weasyprint import HTML 
 
 # ==========================================================
-# ⚙️ CONFIGURACIÓN DEL SISTEMA
+# CONFIGURACIÓN DEL SISTEMA
 # ==========================================================
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://dzjamsbehsubgamikryp.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6amFtc2JlaHN1YmdhbWlrcnlwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTE3MzkyMywiZXhwIjoyMDc0NzQ5OTIzfQ.6-rXL1utK-FqaXwWj5duwYIoIO0mQAzOiOI_P2D0ao0")
@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 # ==========================================================
-# 🔍 CLASE PHISHING ANALYZER (integrada)
+# CLASE PHISHING ANALYZER (integrada)
 # ==========================================================
 class PhishingAnalyzer:
     """Analizador heurístico + validación real HTTP/DNS."""
@@ -168,7 +168,7 @@ class PhishingAnalyzer:
         }
 
 # ==========================================================
-# 📦 MODELOS FASTAPI
+# MODELOS FASTAPI
 # ==========================================================
 class URLRequest(BaseModel):
     url: str
@@ -179,7 +179,7 @@ class BatchAnalysisRequest(BaseModel):
     created_by: str
 
 # ==========================================================
-# 🚀 ENDPOINT: ANALIZAR Y REGISTRAR URL
+# ENDPOINT: ANALIZAR Y REGISTRAR URL
 # ==========================================================
 @app.post("/analyze")
 async def analyze_url(req: URLRequest):
@@ -214,7 +214,7 @@ async def analyze_url(req: URLRequest):
         raise HTTPException(status_code=500, detail=f"Error analizando URL: {str(e)}")
 
 # ==========================================================
-# 📑 ANALIZAR VARIAS URLs (BATCH)
+# ANALIZAR VARIAS URLs (BATCH)
 # ==========================================================
 @app.post("/analyze-batch")
 async def analyze_batch(req: BatchAnalysisRequest):
@@ -237,7 +237,7 @@ async def analyze_batch(req: BatchAnalysisRequest):
     return {"total": len(results), "results": results}
 
 # ==========================================================
-# 📂 ANALIZAR CSV (vía n8n)
+# ANALIZAR CSV (vía n8n)
 # ==========================================================
 @app.post("/analyze-csv")
 async def analyze_csv(file: UploadFile = File(...), created_by: str = "system"):
@@ -285,7 +285,7 @@ async def analyze_csv(file: UploadFile = File(...), created_by: str = "system"):
         raise HTTPException(status_code=500, detail=f"Error procesando CSV: {e}")
 
 # ==========================================================
-# 📊 ESTADÍSTICAS
+# ESTADÍSTICAS
 # ==========================================================
 @app.get("/statistics")
 def stats():
@@ -316,14 +316,14 @@ def stats():
         return {"error": str(e)}
 
 # ==========================================================
-# 🩺 ESTADO DEL SERVIDOR
+# ESTADO DEL SERVIDOR
 # ==========================================================
 @app.get("/health")
 def health():
     return {"status": "running", "db_connected": bool(supabase)}
 
 # ==========================================================
-# 📄 GENERAR REPORTE PDF (solo números, sin gráficos)
+# GENERAR REPORTE PDF (solo números, sin gráficos)
 # ==========================================================
 
 @app.get("/generate-report")
@@ -421,14 +421,14 @@ def generate_report():
         """
 
         # ================================
-        # 🖨️ Generar PDF desde HTML
+        # Generar PDF desde HTML
         # ================================
         os.makedirs("reports", exist_ok=True)
         pdf_path = f"reports/reporte_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         HTML(string=html).write_pdf(pdf_path)
 
         # ================================
-        # 🚀 Enviar PDF al webhook n8n
+        # Enviar PDF al webhook n8n
         # ================================
         n8n_url = os.getenv("N8N_PDF_WEBHOOK", "http://localhost:5678/webhook/generate-pdf")
         try:
