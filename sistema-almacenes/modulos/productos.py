@@ -3,7 +3,7 @@ import pandas as pd
 import time  # <-- Agrega esta importación
 
 # =====================================================
-# ➕ CREAR PRODUCTO (con verificación de duplicados)
+# CREAR PRODUCTO (con verificación de duplicados)
 # =====================================================
 def crear_producto(db, n8n):
     st.subheader("➕ Crear Producto")
@@ -56,7 +56,7 @@ def crear_producto(db, n8n):
             st.error(f"❌ Error al registrar producto: {resultado.get('error')}")
 
 # =====================================================
-# 📖 LEER PRODUCTOS (tabla traducida al español)
+# LEER PRODUCTOS (tabla traducida al español)
 # =====================================================
 def leer_productos(db):
     st.subheader("📖 Productos Registrados")
@@ -81,7 +81,7 @@ def leer_productos(db):
         st.info("No hay productos registrados.")
 
 # =====================================================
-# ✏️ ACTUALIZAR PRODUCTO (vía webhook)
+# ACTUALIZAR PRODUCTO (vía webhook)
 # =====================================================
 def actualizar_producto(db, n8n):
     st.subheader("✏️ Actualizar Producto")
@@ -118,7 +118,7 @@ def actualizar_producto(db, n8n):
             st.error(f"❌ Error al actualizar producto: {resultado.get('error')}")
 
 # =====================================================
-# 🗑️ ELIMINAR PRODUCTO (vía webhook, con reinicio limpio)
+# ELIMINAR PRODUCTO (vía webhook, con reinicio limpio)
 # =====================================================
 def eliminar_producto(db, n8n):
     st.subheader("🗑️ Eliminar Producto")
