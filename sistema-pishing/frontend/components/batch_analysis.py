@@ -11,7 +11,7 @@ def show():
     st.markdown("Sube un archivo `.csv` que contenga una columna llamada **url**. El sistema analizará cada enlace y guardará los resultados en Supabase.")
 
     # ==========================================================
-    # 📥 Descargar CSV de ejemplo
+    # Descargar CSV de ejemplo
     # ==========================================================
     st.subheader("📥 Archivo de ejemplo para pruebas")
     st.markdown("Descarga un archivo CSV de ejemplo con URLs legítimas, sospechosas y fraudulentas para probar el sistema.")
@@ -64,15 +64,15 @@ def show():
     st.divider()
 
     # ==========================================================
-    # 📤 Subir archivo CSV
+    # Subir archivo CSV
     # ==========================================================
     uploaded_file = st.file_uploader("Selecciona tu archivo CSV", type=["csv"])
 
-    # 🧠 Campo para analista (opcional)
+    # Campo para analista (opcional)
     analyst_email = st.text_input("📧 Correo del analista:", "analyst@company.com")
 
     # ==========================================================
-    # 🚀 Enviar CSV para análisis
+    # Enviar CSV para análisis
     # ==========================================================
     if uploaded_file and st.button("🚀 Enviar para análisis"):
         try:
