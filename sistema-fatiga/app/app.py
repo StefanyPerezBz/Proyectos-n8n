@@ -25,7 +25,7 @@ import os
 import requests
 
 # ===============================================
-# 🔧 CONFIGURACIÓN GENERAL DE LA APLICACIÓN
+# CONFIGURACIÓN GENERAL DE LA APLICACIÓN
 # ===============================================
 st.set_page_config(
     page_title="Sistema de Gestión de Fatiga",
@@ -65,7 +65,7 @@ WEBHOOK_INFORMES_EMAIL = os.getenv("WEBHOOK_INFORMES_EMAIL")
 
 
 # ===============================================
-# 🔄 INICIALIZAR ESTADO DE SESIÓN
+# INICIALIZAR ESTADO DE SESIÓN
 # ===============================================
 if 'supabase' not in st.session_state:
     st.session_state.supabase = None
@@ -87,13 +87,13 @@ def enviar_a_n8n(url, payload):
         return {"error": str(e)}
 
 # ===============================================
-# 🧭 BARRA LATERAL (login + conexión + navegación)
+# BARRA LATERAL (login + conexión + navegación)
 # ===============================================
 def barra_lateral():
     st.sidebar.title("Sistema de Gestión de Fatiga")
 
     # -------------------------------
-    # 🔐 CONFIGURACIÓN DE BASE DE DATOS
+    # CONFIGURACIÓN DE BASE DE DATOS
     # -------------------------------
     st.sidebar.subheader("Configuración de Base de Datos")
 
@@ -123,7 +123,7 @@ def barra_lateral():
             st.sidebar.warning("⚠️ Variables SUPABASE_URL o SUPABASE_KEY no encontradas en .env")
 
     # -------------------------------
-    # 🔑 INICIO / CIERRE DE SESIÓN
+    # INICIO / CIERRE DE SESIÓN
     # -------------------------------
     if not st.session_state.usuario_actual:
         st.sidebar.subheader("Iniciar Sesión")
@@ -156,7 +156,7 @@ def barra_lateral():
             st.rerun()
 
     # -------------------------------
-    # 📋 NAVEGACIÓN ENTRE MÓDULOS
+    # NAVEGACIÓN ENTRE MÓDULOS
     # -------------------------------
     if st.session_state.usuario_actual:
         st.sidebar.subheader("Navegación")
@@ -191,7 +191,7 @@ def panel_control_principal():
     st.title("Panel de Control Principal")
 
     # =========================================================
-    # 📡 Cargar Alertas Activas
+    # Cargar Alertas Activas
     # =========================================================
     try:
         response = st.session_state.supabase.table("alertas").select("*").eq("estado", "activa").execute()
@@ -202,7 +202,7 @@ def panel_control_principal():
         alertas_activas = []
 
     # =========================================================
-    # 📊 KPIs PRINCIPALES
+    # KPIs PRINCIPALES
     # =========================================================
     col1, col2, col3, col4 = st.columns(4)
 
@@ -237,7 +237,7 @@ def panel_control_principal():
             st.metric("Operadores Totales", "Error")
 
     # =========================================================
-    # 🗺️ MAPA DE ESTADO DE LA FLOTA
+    # MAPA DE ESTADO DE LA FLOTA
     # =========================================================
     st.subheader("Estado de Fatiga de la Flota")
 
@@ -316,7 +316,7 @@ def panel_control_principal():
         st.error(f"Error al cargar mapa de flota: {str(e)}")
 
     # =========================================================
-    # 📈 GRÁFICO: EVOLUCIÓN ÚLTIMAS 24H
+    # GRÁFICO: EVOLUCIÓN ÚLTIMAS 24H
     # =========================================================
     st.subheader("Análisis de Tendencias")
 
@@ -355,7 +355,7 @@ def panel_control_principal():
             st.error(f"Error generando evolución: {str(e)}")
 
     # =========================================================
-    # 🥧 GRÁFICO: DISTRIBUCIÓN DE RIESGOS
+    # GRÁFICO: DISTRIBUCIÓN DE RIESGOS
     # =========================================================
     with colB:
         try:
@@ -394,7 +394,7 @@ def panel_control_principal():
             st.error(f"Error generando distribución: {str(e)}")
 
     # =========================================================
-    # 🚨 ALERTAS RECIENTES
+    # ALERTAS RECIENTES
     # =========================================================
     st.subheader("Alertas Recientes")
 
@@ -463,7 +463,7 @@ def vista_supervisor():
     st.title("Vista de Supervisor de Turno")
 
     # ================================
-    # 🔵 1. Cargar operadores desde BD
+    # Cargar operadores desde BD
     # ================================
     try:
         operadores = (
@@ -485,7 +485,7 @@ def vista_supervisor():
         return
 
     # ================================
-    # 🔵 2. Obtener ultima métrica de cada operador
+    # Obtener ultima métrica de cada operador
     # ================================
     lista_operadores = []
 
@@ -548,12 +548,12 @@ def vista_supervisor():
     df = pd.DataFrame(lista_operadores)
 
     # ======================
-    # 🔵 Mostrar la tabla
+    # Mostrar la tabla
     # ======================
     st.dataframe(df, use_container_width=True)
 
     # ======================
-    # 🔵 Botón ver detalles
+    # Botón ver detalles
     # ======================
     st.subheader("Ver detalles de operador")
 
@@ -568,7 +568,7 @@ def vista_supervisor():
         st.rerun()
 
     # ======================
-    # 🔴 3. Panel de alertas
+    # Panel de alertas
     # ======================
     st.subheader("Alertas Activas")
 
@@ -634,7 +634,7 @@ def vista_detalles_operador():
     
     try:
         # ---------------------------
-        # 📌 Obtener datos del operador
+        # Obtener datos del operador
         # ---------------------------
         operador_response = st.session_state.supabase.table("operadores").select("*").eq("id", st.session_state.operador_seleccionado).execute()
         
@@ -645,7 +645,7 @@ def vista_detalles_operador():
         operador = operador_response.data[0]
         
         # ---------------------------
-        # 📌 Información general
+        # Información general
         # ---------------------------
         st.subheader("Información General del Operador")
         col1, col2, col3 = st.columns(3)
@@ -675,7 +675,7 @@ def vista_detalles_operador():
         st.markdown("---")
 
         # ------------------------------------------------
-        # 📊 GRÁFICO 1 — Evolución del Índice de Fatiga
+        # GRÁFICO 1 — Evolución del Índice de Fatiga
         # ------------------------------------------------
         st.subheader("📈 Evolución del Índice de Fatiga Durante el Turno")
 
@@ -722,7 +722,7 @@ def vista_detalles_operador():
         st.markdown("---")
 
         # ------------------------------------------------
-        # 📊 GRÁFICO 2 — Métricas fisiológicas clave
+        # GRÁFICO 2 — Métricas fisiológicas clave
         # ------------------------------------------------
         st.subheader("❤️‍🩹 Métricas Fisiológicas del Turno")
 
@@ -762,7 +762,7 @@ def vista_detalles_operador():
             st.info("No hay métricas fisiológicas registradas para este operador.")
         
         # --------------------------
-        # 🔙 Botón volver
+        # Botón volver
         # --------------------------
         if st.button("⬅ Volver a Vista de Supervisor"):
             st.session_state.pagina_actual = "Vista de Supervisor"
@@ -790,7 +790,7 @@ def mantenimiento_tablas():
     )
 
     # =====================================================
-    # 🔵 OPERADORES (CRUD via N8N)
+    # OPERADORES (CRUD via N8N)
     # =====================================================
     if tabla_seleccionada == "operadores":
 
@@ -867,7 +867,7 @@ def mantenimiento_tablas():
             st.info("No hay operadores registrados")
 
     # =====================================================
-    # 🟢 DISPOSITIVOS (CRUD via N8N)
+    # DISPOSITIVOS (CRUD via N8N)
     # =====================================================
     elif tabla_seleccionada == "dispositivos":
 
@@ -970,7 +970,7 @@ def mantenimiento_tablas():
             st.info("No hay dispositivos registrados.")
 
     # =====================================================
-    # 🟡 USUARIOS DEL SISTEMA (CRUD via N8N)
+    # USUARIOS DEL SISTEMA (CRUD via N8N)
     # =====================================================
     elif tabla_seleccionada == "usuarios_sistema":
         st.subheader("Gestión de Usuarios del Sistema")
@@ -1043,14 +1043,14 @@ def mantenimiento_tablas():
             st.info("No hay usuarios registrados")
 
     # =====================================================
-    # 🔴 MÉTRICAS PROCESADAS (CRUD via N8N)
+    # MÉTRICAS PROCESADAS (CRUD via N8N)
     # =====================================================
     elif tabla_seleccionada == "metricas_procesadas":
         
         st.subheader("Gestión de Métricas Procesadas")
 
         # ==========================
-        # ➕ Crear nueva métrica
+        # Crear nueva métrica
         # ==========================
         with st.expander("➕ Agregar Nueva Métrica"):
             # Seleccionar operador
@@ -1091,7 +1091,7 @@ def mantenimiento_tablas():
                     st.rerun()
 
         # ==========================
-        # 📋 Listado de métricas
+        # Listado de métricas
         # ==========================
         st.subheader("Métricas Registradas")
 
@@ -1128,7 +1128,7 @@ def mantenimiento_tablas():
             st.info("No hay métricas registradas.")
 
     # =====================================================
-    # 🟠 MEDICIONES CRUDAS (CRUD via N8N)
+    # MEDICIONES CRUDAS (CRUD via N8N)
     # =====================================================
     elif tabla_seleccionada == "mediciones_crudas":
 
@@ -1217,7 +1217,7 @@ def mantenimiento_tablas():
 # =====================================================
 
 # =====================================================
-# ✏ PANTALLA DE EDICIÓN DE OPERADORES (UPDATE via N8N)
+# PANTALLA DE EDICIÓN DE OPERADORES (UPDATE via N8N)
 # =====================================================
 def editar_operador():
     operador = st.session_state.get("operador_editar", None)
@@ -1262,7 +1262,7 @@ def editar_operador():
 # =====================================================
 
 # =====================================================
-# ✏ PANTALLA DE EDICIÓN DE DISPOSITIVOS (UPDATE via N8N)
+# PANTALLA DE EDICIÓN DE DISPOSITIVOS (UPDATE via N8N)
 # =====================================================
 def editar_dispositivo():
     dispositivo = st.session_state.get("dispositivo_editar", None)
@@ -1341,7 +1341,7 @@ def editar_dispositivo():
 # =====================================================
 
 # =====================================================
-# ✏ PANTALLA DE EDICIÓN DE USUARIOS DEL SISTEMA (UPDATE via N8N)
+# PANTALLA DE EDICIÓN DE USUARIOS DEL SISTEMA (UPDATE via N8N)
 # =====================================================
 def editar_usuario():
     usuario = st.session_state.get("usuario_editar", None)
@@ -1617,7 +1617,7 @@ def generar_pdf_reporte(titulo, descripcion, metricas, operadores, alertas, disp
 
 
 # =====================================================
-# 📄 GENERADOR DE UN SOLO REPORTE (CORREGIDO)
+# GENERADOR DE UN SOLO REPORTE (CORREGIDO)
 # =====================================================
 def generador_reporte_unico():
     st.title("📄 Generar Informe Completo")
@@ -1671,7 +1671,7 @@ def generador_reporte_unico():
 
 
 # =====================================================
-# 📧 PÁGINA PARA ENVIAR ALERTAS POR EMAIL (Webhook)
+# PÁGINA PARA ENVIAR ALERTAS POR EMAIL (Webhook)
 # =====================================================
 def enviar_alertas():
     st.title("📧 Enviar Alerta por Email")
