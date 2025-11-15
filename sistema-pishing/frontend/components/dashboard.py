@@ -15,7 +15,7 @@ def show():
     """)
 
     # ==========================================================
-    # 🔌 Conexión con la API
+    # Conexión con la API
     # ==========================================================
     try:
         stats = requests.get(f"{API}/statistics", timeout=15).json()
@@ -24,7 +24,7 @@ def show():
         return
 
     # ==========================================================
-    # 🎨 PALETA GLOBAL
+    # PALETA GLOBAL
     # ==========================================================
     color_map = {
         "Fraudulentos": "#e74c3c",  # rojo
@@ -38,7 +38,7 @@ def show():
     }
 
     # ==========================================================
-    # 🔢 MÉTRICAS PRINCIPALES
+    # MÉTRICAS PRINCIPALES
     # ==========================================================
     st.markdown("### 📈 Resumen General")
 
@@ -63,7 +63,7 @@ def show():
     st.divider()
 
     # ==========================================================
-    # 🥧 DISTRIBUCIÓN GENERAL
+    # DISTRIBUCIÓN GENERAL
     # ==========================================================
     st.subheader("🥧 Distribución General de Análisis")
 
@@ -88,7 +88,7 @@ def show():
     st.plotly_chart(fig_pie, use_container_width=True)
 
     # ==========================================================
-    # 📊 COMPARACIÓN DE CATEGORÍAS
+    # COMPARACIÓN DE CATEGORÍAS
     # ==========================================================
     st.subheader("📊 Comparación entre Categorías")
 
@@ -105,7 +105,7 @@ def show():
     st.plotly_chart(fig_bar, use_container_width=True)
 
     # ==========================================================
-    # 📊 NUEVO: BARRAS HORIZONTALES
+    # NUEVO: BARRAS HORIZONTALES
     # ==========================================================
     st.subheader("📏 Proporciones visuales (comparación directa)")
 
@@ -122,7 +122,7 @@ def show():
     st.plotly_chart(fig_hbar, use_container_width=True)
 
     # ==========================================================
-    # 🧭 NUEVO: GAUGE — PORCENTAJE DE LEGITIMIDAD
+    # NUEVO: GAUGE — PORCENTAJE DE LEGITIMIDAD
     # ==========================================================
     st.subheader("🧭 Nivel general de legitimidad del sistema")
 
@@ -146,7 +146,7 @@ def show():
     st.plotly_chart(fig_gauge, use_container_width=True)
 
     # ==========================================================
-    # 🕒 TENDENCIAS TEMPORALES
+    # TENDENCIAS TEMPORALES
     # ==========================================================
     st.subheader("📅 Tendencia temporal de detecciones")
 
@@ -183,7 +183,7 @@ def show():
         st.plotly_chart(fig_trend, use_container_width=True)
 
         # ======================================================
-        # 🔥 NUEVO: MAPA DE CALOR — ACTIVIDAD POR DÍA / HORA
+        # NUEVO: MAPA DE CALOR — ACTIVIDAD POR DÍA / HORA
         # ======================================================
         st.subheader("🔥 Mapa de calor de actividad (por hora del día)")
         df_recent["Hora"] = df_recent["created_at"].dt.hour
@@ -201,7 +201,7 @@ def show():
         st.info("ℹ️ No hay actividad reciente disponible.")
 
     # ==========================================================
-    # 📈 ESTADÍSTICAS DESCRIPTIVAS
+    # ESTADÍSTICAS DESCRIPTIVAS
     # ==========================================================
     st.subheader("📋 Estadísticas descriptivas de las detecciones")
 
