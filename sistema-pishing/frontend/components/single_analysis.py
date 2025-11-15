@@ -20,7 +20,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 def show():
     st.title("🔍 Análisis Individual y Gestión de URLs")
 
-    # 🌈 Estilo CSS para botones pequeños
+    # Estilo CSS para botones pequeños
     st.markdown("""
         <style>
         div.stButton > button {
@@ -43,7 +43,7 @@ def show():
     tab1, tab2 = st.tabs(["🔎 Analizar URL", "📋 Gestionar URLs"])
 
     # ========================================================
-    # 🔍 TAB 1 — ANÁLISIS INDIVIDUAL
+    # TAB 1 — ANÁLISIS INDIVIDUAL
     # ========================================================
     with tab1:
         st.subheader("Analizar una URL en tiempo real")
@@ -111,7 +111,7 @@ def show():
                     st.error(f"Error al analizar: {e}")
 
     # ========================================================
-    # 📋 TAB 2 — GESTIÓN DE URLs
+    # TAB 2 — GESTIÓN DE URLs
     # ========================================================
     with tab2:
         st.subheader("📋 Listado de URLs analizadas")
@@ -168,7 +168,7 @@ def show():
             st.dataframe(st.session_state["urls_df"], use_container_width=True)
 
         # =====================================================
-        # ➕ CREAR / EDITAR / ELIMINAR
+        # CREAR / EDITAR / ELIMINAR
         # =====================================================
         st.divider()
         st.markdown("### ⚙️ URLs")
